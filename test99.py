@@ -15,6 +15,7 @@ class _99Scraper:
         self.Price_unit = []
         self.Area = []
         self.Type_area = []
+        self.Date_posted = []
     
     def start_driver(self):
         self.driver = webdriver.Chrome('H:\DOWNLOADS\chromedriver.exe')
@@ -50,10 +51,24 @@ class _99Scraper:
 
         # self.Area.append(soup.findAll('td', attrs = {'class' : 'ssrpTuple__col title_semiBold',
         #                                         'id' : 'srp_tuple_primary_area'}))
+
         
     
-    def qa(self):
-        pass
+    def get_details(self):
+        for i in soup.findAll('a',attrs={'class':'body_med srpTuple__propertyName','id':'srp_tuple_property_title'}):
+            self.Location_Bldng_name.append(i.h2.text)
+        
+        for i in soup.findAll('div',attrs={'class':'ellipsis srpTuple__smallDescriptionStyle'}):
+            self.Description.append(i.text)
+
+        for i in soup.findAll('div',attrs={'class':'srpTuple__postedByText list_header_semiBold Ng100 ellipsis'}):
+            self.Seller_name.append(i.text)
+        
+        for i in soup.findAll('div',attrs={'class':'f10 Ng100 srpTuple__postedByText ellipsis'}):
+            self.Date_posted.append(i.span.text.replace('by',''))
+            
+
+
         
 
 if __name__ == "__main__":
@@ -61,5 +76,5 @@ if __name__ == "__main__":
     scraper.start_driver()
     keyword = "Mumbai"
     scraper.open_new(keyword)
-    # scraper.qa()
+    # scraper.get_details()
     scraper.close_driver()

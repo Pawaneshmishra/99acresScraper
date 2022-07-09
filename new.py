@@ -16,6 +16,5 @@ content = driver.page_source
 soup = bs(content)
 # print(html_soup.findAll('a',attrs={'class':'body_med srpTuple__propertyName','id':'srp_tuple_property_title'}))
 
-for i in soup.findAll('a',attrs={'class':'body_med srpTuple__propertyName','id':'srp_tuple_property_title'}):
-    print(i.h2.text)
-    print("\n")
+for i in soup.findAll('div',attrs={'class':'f10 Ng100 srpTuple__postedByText ellipsis'}):
+    print(i.span.text.replace('by',''))
