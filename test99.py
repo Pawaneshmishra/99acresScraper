@@ -55,8 +55,6 @@ class _99Scraper:
             self.Area.append(i.text)
 
 
-        print(len(self.Location_Bldng_name),len(self.Description),len(self.Seller_name),len(self.Price),len(self.Area),len(self.Bhk),len(self.Date_posted))
-
 if __name__ == "__main__":
     scraper = _99Scraper()
     scraper.start_driver()
