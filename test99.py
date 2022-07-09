@@ -8,14 +8,14 @@ from bs4 import BeautifulSoup as bs
 class _99Scraper:
     def __init__(self):
         self.driver = ''
-        self.Description = []
-        self.Location_Bldng_name = []
-        self.Seller_name = []
-        self.Price = []
-        self.Price_unit = []
-        self.Area = []
-        self.Type_area = []
-        self.Date_posted = []
+        self.soup =''
+        self.Description = []#
+        self.Location_Bldng_name = []#
+        self.Seller_name = []#
+        self.Price = []#
+        self.Area = []#
+        self.Bhk = []
+        self.Date_posted = []#
     
     def start_driver(self):
         self.driver = webdriver.Chrome('H:\DOWNLOADS\chromedriver.exe')
@@ -28,53 +28,39 @@ class _99Scraper:
         
     def open_new(self,keyword):
         page = self.driver.get("https://www.99acres.com/search/property/buy/"+keyword+"?city=12&keyword=mumbai&preference=S&area_unit=1&budget_min=0&res_com=R")
-        
-        for i in range(1,10):
-            self.driver.execute_script("window.scrollBy(0,1000)")
+
         content = self.driver.page_source
-        soup = bs(content)
-
-        # self.Location_Bldng_name.append(soup.findAll('td', attrs = {'class' : 'list_header_bold srpTuple__spacer10'}))
-
-        # self.Seller_name.append(soup.findAll('div', attrs = {'class' : 'list_header_semiBold'}))
-
-        # self.Description.append(soup.findAll('div', attrs = {'class' : 'srpTuple__descMore body_med'}))
-
-        # self.Type_area.append(soup.findAll('div', attrs = {'class' : 'caption_subdued_small',
-        #                                             'id' : 'srp_tuple_secondary_area'}))
-
-        # self.Price.append(soup.findAll('td', attrs = {'class' : 'srpTuple__midGrid title_semiBold srpTuple__spacer16',
-        #                                         'id' : 'srp_tuple_price'}))
-
-        # self.Price_unit.append(soup.findAll('td', attrs = {'class' : 'srpTuple__midGrid title_semiBold srpTuple__spacer16',
-        #                                         'id' : 'srp_tuple_price'}))
-
-        # self.Area.append(soup.findAll('td', attrs = {'class' : 'ssrpTuple__col title_semiBold',
-        #                                         'id' : 'srp_tuple_primary_area'}))
-
-        
+        self.soup = bs(content)
     
     def get_details(self):
-        for i in soup.findAll('a',attrs={'class':'body_med srpTuple__propertyName','id':'srp_tuple_property_title'}):
+        for i in self.soup.findAll('a',attrs={'class':'body_med srpTuple__propertyName','id':'srp_tuple_property_title'}):
             self.Location_Bldng_name.append(i.h2.text)
         
-        for i in soup.findAll('div',attrs={'class':'ellipsis srpTuple__smallDescriptionStyle'}):
+        for i in self.soup.findAll('div',attrs={'class':'ellipsis srpTuple__smallDescriptionStyle'}):
             self.Description.append(i.text)
 
-        for i in soup.findAll('div',attrs={'class':'srpTuple__postedByText list_header_semiBold Ng100 ellipsis'}):
+        for i in self.soup.findAll('div',attrs={'class':'srpTuple__postedByText list_header_semiBold Ng100 ellipsis'}):
             self.Seller_name.append(i.text)
         
-        for i in soup.findAll('div',attrs={'class':'f10 Ng100 srpTuple__postedByText ellipsis'}):
+        for i in self.soup.findAll('div',attrs={'class':'f10 Ng100 srpTuple__postedByText ellipsis'}):
             self.Date_posted.append(i.span.text.replace('by',''))
-            
 
-
+        for i in self.soup.findAll('td',attrs={'class':'srpTuple__col title_semiBold','id':'srp_tuple_price'}):
+            self.Price.append(i.text)
         
+        for i in self.soup.findAll('td',attrs={'class':'srpTuple__col title_semiBold','id':'srp_tuple_primary_area'}):
+            self.Area.append(i.text)
+
+        for i in self.soup.findAll('td',attrs={'class':'srpTuple__col title_semiBold','id':'srp_tuple_bedroom'}):
+            self.Area.append(i.text)
+
+
+        print(len(self.Location_Bldng_name),len(self.Description),len(self.Seller_name),len(self.Price),len(self.Area),len(self.Bhk),len(self.Date_posted))
 
 if __name__ == "__main__":
     scraper = _99Scraper()
     scraper.start_driver()
     keyword = "Mumbai"
     scraper.open_new(keyword)
-    # scraper.get_details()
+    scraper.get_details()
     scraper.close_driver()

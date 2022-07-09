@@ -3,6 +3,7 @@ from selenium import webdriver
 from requests import get
 import itertools
 import json
+import re
 
 headers = ({'User-Agent':'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'})
 
@@ -16,5 +17,5 @@ content = driver.page_source
 soup = bs(content)
 # print(html_soup.findAll('a',attrs={'class':'body_med srpTuple__propertyName','id':'srp_tuple_property_title'}))
 
-for i in soup.findAll('div',attrs={'class':'f10 Ng100 srpTuple__postedByText ellipsis'}):
-    print(i.span.text.replace('by',''))
+for i in soup.findAll('td',attrs={'class':'srpTuple__col title_semiBold','id':'srp_tuple_bedroom'}):
+    print(i.text)
