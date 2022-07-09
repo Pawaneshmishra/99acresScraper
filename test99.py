@@ -28,8 +28,8 @@ class _99Scraper:
     def open_new(self,keyword):
         page = self.driver.get("https://www.99acres.com/search/property/buy/"+keyword+"?city=12&keyword=mumbai&preference=S&area_unit=1&budget_min=0&res_com=R")
         
-        # for i in range(1,10):
-            # self.driver.execute_script("window.scrollBy(0,1000)")
+        for i in range(1,10):
+            self.driver.execute_script("window.scrollBy(0,1000)")
         content = self.driver.page_source
         soup = bs(content)
 
