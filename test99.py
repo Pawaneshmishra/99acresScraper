@@ -29,6 +29,11 @@ class _99Scraper:
     def open_new(self,keyword):
         page = self.driver.get("https://www.99acres.com/search/property/buy/"+keyword+"?city=12&keyword=mumbai&preference=S&area_unit=1&budget_min=0&res_com=R")
 
+        total_height = int(self.driver.execute_script("return document.body.scrollHeight"))
+
+        for i in range(1, total_height, 5):
+            self.driver.execute_script("window.scrollTo(0, {});".format(i))
+
         content = self.driver.page_source
         self.soup = bs(content)
     
@@ -52,8 +57,9 @@ class _99Scraper:
             self.Area.append(i.text)
 
         for i in self.soup.findAll('td',attrs={'class':'srpTuple__col title_semiBold','id':'srp_tuple_bedroom'}):
-            self.Area.append(i.text)
+            self.Bhk.append(i.text)
 
+        print(len(self.Location_Bldng_name),len(self.Description),len(self.Seller_name),len(self.Price),len(self.Area),len(self.Bhk),len(self.Date_posted))
 
 if __name__ == "__main__":
     scraper = _99Scraper()
